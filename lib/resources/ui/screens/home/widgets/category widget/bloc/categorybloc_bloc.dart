@@ -20,5 +20,6 @@ class CategoryblocBloc extends Bloc<CategoryblocEvent, CategoryblocState> {
         emit(CategoryBlocError());
       }
     });
+    on<CategoryBlocSelected>((event, emit) {});
   }
 }

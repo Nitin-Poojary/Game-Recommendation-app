@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamesrecommendation/resources/models/home/allgames/allgamesmodel.dart';
-import 'allgamescard.dart';
+import 'package:gamesrecommendation/resources/ui/screens/home/widgets/allgameswidget/helper%20widgets/listwidgets.dart';
 import 'bloc/allgamesbloc_bloc.dart';
 
 class AllGamesList extends StatelessWidget {
@@ -44,13 +44,9 @@ class AllGamesList extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state.status == Status.loaded) {
-                    return ListView.builder(
-                      cacheExtent: 7,
-                      itemCount: state.apiResponse.length,
-                      itemBuilder: (context, i) => AllGamesCard(
-                        gameName: allGames[i].gameName.toString(),
-                        genreNplatform: allGames[i].platform.toString(),
-                      ),
+                    return AllGamesWidget(
+                      length: state.apiResponse.length,
+                      allGames: allGames,
                     );
                   } else {
                     return Center(

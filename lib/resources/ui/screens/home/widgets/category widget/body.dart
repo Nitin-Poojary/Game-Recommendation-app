@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamesrecommendation/resources/models/home/category/categorymodel.dart';
 
 import 'bloc/categorybloc_bloc.dart';
+import 'helper widgets/listcategories.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -36,46 +37,7 @@ class Body extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is CategoryBlocLoaded) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 23, left: 23, right: 23),
-              child: ListView.builder(
-                cacheExtent: 10,
-                itemCount: 10,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, i) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: GestureDetector(
-                    onTap: () =>
-                        CategoryblocBloc().add(CategoryBlocSelected(id: i)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 60,
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.network(
-                                  categories[i].imageURL,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(categories[i].gameName),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
+            return CategoryListWidget(categories: categories);
           }
           return const Center(
             child: Text("Some Error Occured"),
