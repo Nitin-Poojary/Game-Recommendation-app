@@ -10,7 +10,7 @@ abstract class CategoryblocState extends Equatable {
 class CategoryblocLoading extends CategoryblocState {}
 
 class CategoryBlocLoaded extends CategoryblocState {
-  List<Result> results;
+  final List<Result> results;
 
   CategoryBlocLoaded({
     List<Result>? results,
@@ -18,6 +18,17 @@ class CategoryBlocLoaded extends CategoryblocState {
 
   @override
   List<Object> get props => [results];
+}
+
+class CategorySelected extends CategoryblocState {
+  final List<AllGamesModel> allGamesModel;
+
+  const CategorySelected({
+    required this.allGamesModel,
+  });
+
+  @override
+  List<Object> get props => [allGamesModel];
 }
 
 class CategoryBlocError extends CategoryblocState {

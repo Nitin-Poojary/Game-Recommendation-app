@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../models/home/category/categorymodel.dart';
 import '../bloc/categorybloc_bloc.dart';
 
@@ -19,7 +19,8 @@ class CategoryListWidget extends StatelessWidget {
         itemBuilder: (context, i) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: GestureDetector(
-            onTap: () => CategoryblocBloc().add(CategoryBlocSelected(id: i)),
+            onTap: () => BlocProvider.of<CategoryblocBloc>(context)
+                .add(CategoryBlocSelected(id: i - 1)),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

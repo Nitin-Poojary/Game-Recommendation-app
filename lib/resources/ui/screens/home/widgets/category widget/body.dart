@@ -10,7 +10,12 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<CategoryModel> categories = [];
+    List<CategoryModel> categories = [
+      CategoryModel(
+          imageURL:
+              "https://staticg.sportskeeda.com/editor/2021/12/d6db3-16395972934562.png",
+          gameName: "All Games")
+    ];
 
     return BlocListener<CategoryblocBloc, CategoryblocState>(
       listener: (context, state) {
@@ -36,7 +41,7 @@ class Body extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is CategoryBlocLoaded) {
+          } else if (state is CategoryBlocLoaded || state is CategorySelected) {
             return CategoryListWidget(categories: categories);
           }
           return const Center(

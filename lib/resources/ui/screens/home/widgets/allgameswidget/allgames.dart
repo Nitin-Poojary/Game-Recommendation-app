@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamesrecommendation/resources/models/home/allgames/allgamesmodel.dart';
 import 'package:gamesrecommendation/resources/ui/screens/home/widgets/allgameswidget/helper%20widgets/listwidgets.dart';
-import 'bloc/allgamesbloc_bloc.dart';
+import '../category widget/bloc/categorybloc_bloc.dart';
 
 class AllGamesList extends StatelessWidget {
   const AllGamesList({Key? key}) : super(key: key);
@@ -11,14 +11,14 @@ class AllGamesList extends StatelessWidget {
   Widget build(BuildContext context) {
     List<AllGamesModel> allGames = [];
 
-    return BlocListener<AllgamesblocBloc, AllgamesLoadedBloc>(
+    return BlocListener<CategoryblocBloc, CategoryblocState>(
       listener: (context, state) {
-        if (state.status == Status.loaded && state.apiResponse.isNotEmpty) {
-          for (var i = 0; i < state.apiResponse.length; i++) {
-            for (var game in state.apiResponse[i].games) {
+        if (state is CategoryBlocLoaded && state.results.isNotEmpty) {
+          for (var i = 0; i < state.results.length; i++) {
+            for (var game in state.results[i].games) {
               allGames.add(AllGamesModel(
                   gameName: game.name.toString(),
-                  platform: state.apiResponse[i].name.toString()));
+                  platform: state.results[i].name.toString()));
             }
           }
         }
@@ -29,25 +29,36 @@ class AllGamesList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "All Games",
-              style: Theme.of(context).textTheme.headline5,
+            BlocBuilder<CategoryblocBloc, CategoryblocState>(
+              builder: (context, state) {
+                if (state is CategorySelected) {
+                  return Text(
+                    state.allGamesModel[0].platform,
+                    style: Theme.of(context).textTheme.headline5,
+                  );
+                }
+                return Text(
+                  "All Games",
+                  style: Theme.of(context).textTheme.headline5,
+                );
+              },
             ),
             const SizedBox(
               height: 10,
             ),
             Expanded(
-              child: BlocBuilder<AllgamesblocBloc, AllgamesLoadedBloc>(
+              child: BlocBuilder<CategoryblocBloc, CategoryblocState>(
                 builder: (context, state) {
-                  if (state.status == Status.loading) {
+                  if (state is CategoryblocLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (state.status == Status.loaded) {
+                  } else if (state is CategoryBlocLoaded) {
                     return AllGamesWidget(
-                      length: state.apiResponse.length,
                       allGames: allGames,
                     );
+                  } else if (state is CategorySelected) {
+                    return AllGamesWidget(allGames: state.allGamesModel);
                   } else {
                     return Center(
                       child: Text(
