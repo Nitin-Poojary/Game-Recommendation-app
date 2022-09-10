@@ -35,3 +35,8 @@ class CategoryBlocError extends CategoryblocState {
   @override
   List<Object> get props => [];
 }
+
+class GameListLoading extends CategoryblocState {
+  @override
+  List<Object> get props => [];
+}

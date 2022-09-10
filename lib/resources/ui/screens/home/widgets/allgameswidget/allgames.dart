@@ -49,7 +49,8 @@ class AllGamesList extends StatelessWidget {
             Expanded(
               child: BlocBuilder<CategoryblocBloc, CategoryblocState>(
                 builder: (context, state) {
-                  if (state is CategoryblocLoading) {
+                  if (state is CategoryblocLoading ||
+                      state is GameListLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );

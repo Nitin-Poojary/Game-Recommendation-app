@@ -11,11 +11,11 @@ part 'categorybloc_state.dart';
 class CategoryblocBloc extends Bloc<CategoryblocEvent, CategoryblocState> {
   CategoryblocBloc() : super(CategoryblocLoading()) {
     List<Result> response = [];
+    ApiRepository apiRepository = ApiRepository();
 
     on<GetAllCategories>((event, emit) async {
       emit(CategoryblocLoading());
 
-      ApiRepository apiRepository = ApiRepository();
       try {
         response = await apiRepository.fetchAllGames() as List<Result>;
         emit(CategoryBlocLoaded(results: response));
@@ -24,19 +24,12 @@ class CategoryblocBloc extends Bloc<CategoryblocEvent, CategoryblocState> {
       }
     });
     on<CategoryBlocSelected>((event, emit) {
-      emit(CategoryblocLoading());
+      emit(GameListLoading());
       if (event.id < 0) {
         emit(CategoryBlocLoaded(results: response));
       } else {
-        Result result = response[event.id];
-        List<AllGamesModel> gamesModel = [];
-
-        for (var i in result.games) {
-          gamesModel.add(AllGamesModel(
-              gameName: i.name.toString(), platform: result.name.toString()));
-        }
-
-        emit(CategorySelected(allGamesModel: gamesModel));
+        emit(CategorySelected(
+            allGamesModel: apiRepository.fetchGamesList(event.id)));
       }
     });
   }
